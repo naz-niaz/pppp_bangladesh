@@ -582,7 +582,330 @@ id="topBtn">
 
 </button>
 
-<script type="module" src="chat/chat-loader.js"></script>
+<script type="module" src="chat/chat-loader.js">
+</script>
+
+<!-- Floating Share & Back To Top Buttons -->
+
+<style>
+.floating-btn{
+position:fixed;
+right:20px;
+width:65px;
+height:65px;
+border:none;
+border-radius:50%;
+background:#1e88e5;
+color:#fff;
+font-size:30px;
+cursor:pointer;
+box-shadow:0 6px 16px rgba(0,0,0,.35);
+transition:.3s;
+z-index:99999;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.floating-btn:hover{
+background:#1565c0;
+transform:scale(1.08);
+}
+
+#shareBtn{
+bottom:105px;
+}
+
+#topBtn{
+bottom:25px;
+display:none;
+}
+</style>
+
+<button id="shareBtn" class="floating-btn" title="Share">
+🔗
+</button>
+
+<button id="topBtn" class="floating-btn" title="Back to Top">
+↑
+</button>
+
+<script>
+// Back To Top
+window.addEventListener("scroll",function(){
+
+const topBtn=document.getElementById("topBtn");
+
+if(document.documentElement.scrollTop>300){
+topBtn.style.display="flex";
+}else{
+topBtn.style.display="none";
+}
+
+});
+
+document.getElementById("topBtn").onclick=function(){
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+};
+
+// Website Share
+document.getElementById("shareBtn").onclick=async function(){
+
+const shareData={
+title:document.title,
+text:"People's Power & Peace Party (PPPP) Bangladesh Official Website",
+url:window.location.href
+};
+
+if(navigator.share){
+
+try{
+await navigator.share(shareData);
+}catch(e){}
+
+}else{
+
+navigator.clipboard.writeText(window.location.href);
+
+alert("Website link copied successfully!");
+
+}
+
+};
+</script>
+
+<!-- =========================================================
+     ⚙️ PPPP SHARED FLOATING SETTINGS LOADER
+     Source: setting.html
+========================================================= -->
+
+<script>
+(async function () {
+
+    try {
+
+        const response = await fetch(
+            "setting.html",
+            {
+                cache: "no-cache"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "setting.html could not be loaded."
+            );
+        }
+
+        const source =
+            await response.text();
+
+
+        /* =====================================================
+           1. EXTRACT <style> BLOCKS
+        ===================================================== */
+
+        const styleMatches =
+            source.match(
+                /<style\b[^>]*>[\s\S]*?<\/style>/gi
+            ) || [];
+
+
+        styleMatches.forEach(function (styleBlock) {
+
+            const style =
+                document.createElement("style");
+
+            style.textContent =
+                styleBlock
+                    .replace(
+                        /^<style\b[^>]*>/i,
+                        ""
+                    )
+                    .replace(
+                        /<\/style>$/i,
+                        ""
+                    );
+
+            style.dataset.ppppSettings =
+                "true";
+
+            document.head.appendChild(
+                style
+            );
+
+        });
+
+
+        /* =====================================================
+           2. REMOVE STYLE BLOCKS
+        ===================================================== */
+
+        let content =
+            source.replace(
+                /<style\b[^>]*>[\s\S]*?<\/style>/gi,
+                ""
+            );
+
+
+        /* =====================================================
+           3. EXTRACT SCRIPT BLOCKS
+        ===================================================== */
+
+        const scriptMatches =
+            content.match(
+                /<script\b[^>]*>[\s\S]*?<\/script>/gi
+            ) || [];
+
+
+        /* =====================================================
+           4. REMOVE SCRIPT BLOCKS
+        ===================================================== */
+
+        content =
+            content.replace(
+                /<script\b[^>]*>[\s\S]*?<\/script>/gi,
+                ""
+            );
+
+
+        /* =====================================================
+           5. INSERT SETTINGS HTML
+        ===================================================== */
+
+        const settingsContainer =
+            document.createElement("div");
+
+        settingsContainer.id =
+            "ppppSharedSettings";
+
+        settingsContainer.innerHTML =
+            content;
+
+        document.body.appendChild(
+            settingsContainer
+        );
+
+
+        /* =====================================================
+           6. EXECUTE JAVASCRIPT
+        ===================================================== */
+
+        for (
+            const scriptBlock
+            of scriptMatches
+        ) {
+
+            const temp =
+                document.createElement("div");
+
+            temp.innerHTML =
+                scriptBlock;
+
+            const oldScript =
+                temp.querySelector(
+                    "script"
+                );
+
+            if (!oldScript) continue;
+
+
+            const newScript =
+                document.createElement(
+                    "script"
+                );
+
+
+            /* External JavaScript */
+
+            if (
+                oldScript.getAttribute("src")
+            ) {
+
+                newScript.src =
+                    new URL(
+                        oldScript.getAttribute(
+                            "src"
+                        ),
+                        window.location.href
+                    ).href;
+
+            }
+
+
+            /* Inline JavaScript */
+
+            else {
+
+                newScript.textContent =
+                    oldScript.textContent;
+
+            }
+
+
+            /* Preserve important attributes */
+
+            Array.from(
+                oldScript.attributes
+            ).forEach(function (attr) {
+
+                if (
+                    attr.name !== "src"
+                ) {
+
+                    newScript.setAttribute(
+                        attr.name,
+                        attr.value
+                    );
+
+                }
+
+            });
+
+
+            newScript.dataset.ppppSettings =
+                "true";
+
+
+            document.body.appendChild(
+                newScript
+            );
+
+        }
+
+
+        /* =====================================================
+           7. SETTINGS LOADED EVENT
+        ===================================================== */
+
+        document.dispatchEvent(
+            new CustomEvent(
+                "ppppSettingsLoaded"
+            )
+        );
+
+
+        console.log(
+            "⚙️ PPPP Shared Floating Settings Loaded Successfully."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "⚙️ PPPP Settings Loader Error:",
+            error
+        );
+
+    }
+
+})();
+</script>
 
 </div>
 
