@@ -176,12 +176,12 @@ Power to the People • Peace for the People
 <input
 id="search"
 type="text"
-placeholder="🔍 Search PPPP Priyo...">
+placeholder="🔍 Search PPPP Priyo Pro...">
 
 </div>
 
 <div id="totalPriyo">
-Total Priyo : 0
+Total Priyo Pro : 0
 </div>
 
 </div>
@@ -209,7 +209,6 @@ const priyopro = [
 "প্রিয়_ক্রিকেটার_মাশরাফি_বিন_মর্তুজা.jpg",
 "প্রিয়_নারী_ক্রিকেট_দল_বাংলাদেশ.jpg",
 "প্রিয়_নারী_ক্রিকেটার_নিগার_সুলতানা_জ্যোতি.jpg",
-"শৈশবের_প্রিয়_খেলা_মার্বেল_খেলা.jpg",
 "প্রিয়_অভিনেতা_সালমান_শাহ.jpg",
 "প্রিয়_অভিনেত্রী_শাবনূর.jpg",
 "প্রিয়_অভিনেত্রী_শাবানা.jpg",
@@ -254,14 +253,14 @@ function render(list){
 
 gallery.innerHTML="";
 
-totalPriyo.innerHTML=
-"Total Priyo : <b>"+list.length+"</b>";
+totalPriyo.innerHTML =
+"Total Priyo Pro : <b>"+list.length+"</b>";
 
 list.forEach((file,index)=>{
 
 const color=colors[index%colors.length];
 
-const url="priyo/"+encodeURIComponent(file);
+const url="priyo-pro/"+encodeURIComponent(file);
 
 gallery.innerHTML+=`
 
@@ -339,7 +338,7 @@ onclick="sharePriyo('${file}','${url}')">
 
 }
 
-render(priyo);
+render(priyopro);
 
 document
 .getElementById("search")
@@ -349,7 +348,7 @@ const q=e.target.value.toLowerCase();
 
 render(
 
-priyo.filter(item=>
+priyopro.filter(item=>
 
 item.toLowerCase().includes(q)
 
