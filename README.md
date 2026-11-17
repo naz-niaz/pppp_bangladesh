@@ -104,6 +104,8 @@
 ├── 💍 PPPP Begum Nazmun
 ├── 💎 PPPP Priyo
 ├── ❤️ PPPP Priyo Pro
+├── 🚫 PPPP Apriyo
+├── 💔 PPPP Apriyo Pro
 ├── 🕊️ PPPP Freedom
 ├── 🔰 PPPP Fighter
 └── 🌐 PPPP Social
